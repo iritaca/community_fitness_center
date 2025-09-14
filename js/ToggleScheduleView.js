@@ -17,12 +17,12 @@ export class ToggleScheduleView extends Observable{
      * @param {HTMLElement} container - The container element where the toggle button will be mounted
      * @param {string[]} buttons  - Array of button ids; first element is default active
      */
-    constructor(buttons=['daily','weekly'],container){
+    constructor({buttons=['daily','weekly'],wrapper}){
         super()// to access Observable constructor
-        if(!(container instanceof HTMLElement)) {
-            throw new Error(`#${ToggleScheduleView.containerId} element not found`)}
+        if(!(wrapper instanceof HTMLElement)) {
+            throw new Error(`#${wrapper} element not found`)}
 
-        this.container = container
+        this.wrapper = wrapper
         this.buttons = buttons
         this.activeToggle=buttons[0]
 
@@ -32,19 +32,19 @@ export class ToggleScheduleView extends Observable{
     
     /** Creates toggle buttons and appends them to the container */
     createButtons(){
-        this.container.innerHTML =''
+        this.wrapper.innerHTML =''
         this.buttons.forEach(id=>{
             const btn = document.createElement('button')
             btn.id=id
             btn.classList.add('toggle-button')
             btn.setAttribute('aria-pressed','false')
             btn.textContent=id[0].toUpperCase() + id.slice(1) + ' schedule'
-            this.container.appendChild(btn)
+            this.wrapper.appendChild(btn)
         })
     }
     /** Sets up event listener for button clicks and updates initial UI */
     init(){
-        this.container.addEventListener('click', (e)=> this.handleClick(e))
+        this.wrapper.addEventListener('click', (e)=> this.handleClick(e))
         this.updateUI()
     }
 /** Handles toggle click events
@@ -65,7 +65,7 @@ export class ToggleScheduleView extends Observable{
     }
     /** Updates the UI to reflect the current active toggle and accessibility state */
     updateUI(){
-        const buttons = this.container.querySelectorAll('button')
+        const buttons = this.wrapper.querySelectorAll('button')
         buttons.forEach(btn=>{
             if(btn.id===this.activeToggle){
                 btn.setAttribute('data-active', 'isActive')
