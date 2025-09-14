@@ -29,12 +29,20 @@ class Select{
 }
 
 export class DropdownSelect extends Select{
-    constructor({label,wrapper,options=[],id}){
+    constructor({label,wrapper,options=[],id,defaultOption, autoSort=true}){
         super({label,wrapper,id})
         this.options=options
         this.selectEl = document.createElement('select')
         this.selectEl.setAttribute('id',id)
-        options.forEach(option=>{
+
+        // handle sorting if needed
+        let orderedOptions = autoSort ? [...options].sort((a,b)=>a.localeCompare(b)) : [...options]
+        // Adds default option at the top
+        if(defaultOption){
+            orderedOptions.unshift(defaultOption)
+        }
+
+        orderedOptions.forEach(option=>{
             const optionEl = document.createElement('option')
             optionEl.value=option
             optionEl.textContent=option
