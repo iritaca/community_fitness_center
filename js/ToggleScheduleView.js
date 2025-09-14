@@ -1,4 +1,5 @@
 import { Observable } from './Observable.js' 
+import { ValidateWrapper } from './utils.js'
 
 /** Toggle schedule view
  *  --------------------
@@ -19,10 +20,8 @@ export class ToggleScheduleView extends Observable{
      */
     constructor({buttons=['daily','weekly'],wrapper}){
         super()// to access Observable constructor
-        if(!(wrapper instanceof HTMLElement)) {
-            throw new Error(`#${wrapper} element not found`)}
+        this.wrapper=new ValidateWrapper({wrapper,componentnName:'week-toggle'}).getWrapper()
 
-        this.wrapper = wrapper
         this.buttons = buttons
         this.activeToggle=buttons[0]
 

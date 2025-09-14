@@ -1,9 +1,8 @@
+import { ValidateWrapper } from './utils.js'
 class Select{
     constructor({label,wrapper,id}){
-        if(!(wrapper instanceof HTMLElement)){
-            throw new Error(`${wrapper} element not found`)
-        }
-        this.wrapper = wrapper
+        this.wrapper = new ValidateWrapper({wrapper,componentName:this.constructor.name,customId:id}).getWrapper()
+
         this.label = label
         this.id = id
 
@@ -29,7 +28,6 @@ class Select{
     }
 }
 
-// This dropdown will change the data recursively by filtering between a selected option or default to show all activities
 export class DropdownSelect extends Select{
     constructor({label,wrapper,options=[],id}){
         super({label,wrapper,id})
