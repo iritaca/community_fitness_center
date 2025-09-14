@@ -23,7 +23,6 @@ class Select{
     }
 
     setIsVisible(isVisible){
-        console.log(this.container)
         this.container.style.display = isVisible?'flex':'none'
     }
 }
