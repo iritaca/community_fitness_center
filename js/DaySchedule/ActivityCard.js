@@ -1,15 +1,14 @@
 import { ACTIVITIES_BY_DAY } from '../constants.js';
-// @TODO: Add proper styling
 class ActivityCard{
     constructor({activity}){
-        this.title = activity.title
+        this.title = activity.activity
         this.instructor = activity.instructor
         this.time = activity.time
+        this.container=document.createElement('div')
         this.render()
 
     }
     render(){
-        this.container=document.createElement('div')
         this.container.classList.add('activity-card')
 
         this.titleEl= document.createElement('h6')
@@ -32,21 +31,19 @@ class ActivityCard{
 
 }
 
-// @TODO: Add proper styling
 export class ActivityCardList{
     constructor(day){
         this.day = day        
         this.activities=ACTIVITIES_BY_DAY.find(date=>date.day===this.day).activities
+        this.container=document.createElement('ul')
         this.render()
     }
 
     render(){
         const frag = document.createDocumentFragment()
-        this.container=document.createElement('ul')
         this.container.classList.add('activity-card-list')
 
         for(const activity of this.activities){
-            console.log({activity})
             const liEl =document.createElement('li')
             liEl.classList.add('activity-card-item')
             liEl.appendChild(new ActivityCard({activity}).container)
