@@ -1,7 +1,8 @@
 import { ToggleScheduleView } from './ToggleScheduleView.js';
 import { DropdownSelect, DateSelect } from './Select.js';
-import { DaySchedule } from './DaySchedule/DaySchedule.js';
-import { ACTIVITIES } from './constants.js';
+import { ScheduleList } from './DaySchedule/Schedule.js';
+import { ACTIVITIES, FOOTER_LINKS } from './constants.js';
+import { Footer } from './Footer.js';
 
 
 // Containers
@@ -11,7 +12,7 @@ const filtersContainer = 'activities-filters'
 const toggle = new ToggleScheduleView({buttons:['daily','weekly'],wrapper:'schedule-toggle'})
 
 const activitiesSelect = new DropdownSelect({
-    label:'Selected class',
+    label:'activity',
     wrapper:filtersContainer,
     options:ACTIVITIES,
     id:'class-select',
@@ -26,5 +27,7 @@ toggle.suscribe(active=>{
     dateSelect.setIsVisible(isDaily)
 })
 
-const MondaySchedule = new DaySchedule({day:'monday',wrapper:'activities'})
-console.log(MondaySchedule)
+const Schedule = new ScheduleList({wrapper:'activities'})
+
+
+const FooterLinks = new Footer({links:FOOTER_LINKS})
