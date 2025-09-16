@@ -1,4 +1,4 @@
-import { ValidateWrapper } from './utils.js'
+import { capitalizeWord, ValidateWrapper } from './utils.js'
 class Select{
     constructor({label,wrapper,id}){
         this.wrapper = new ValidateWrapper({wrapper,componentName:this.constructor.name,customId:id}).getWrapper()
@@ -11,6 +11,7 @@ class Select{
         this.container.classList.add('select-container')
 
         this.labelEl = document.createElement('label')
+        this.labelEl.classList.add('select-label')
         this.labelEl.textContent = this.label
         this.container.appendChild(this.labelEl)
         this.labelEl.setAttribute('for',id)
@@ -44,7 +45,7 @@ export class DropdownSelect extends Select{
         orderedOptions.forEach(option=>{
             const optionEl = document.createElement('option')
             optionEl.value=option
-            optionEl.textContent=option
+            optionEl.textContent=capitalizeWord(option)
             this.selectEl.appendChild(optionEl)
         })
 

@@ -1,5 +1,5 @@
 import { Observable } from './Observable.js' 
-import { ValidateWrapper } from './utils.js'
+import { capitalizeWord, ValidateWrapper } from './utils.js'
 
 /** Toggle schedule view
  *  --------------------
@@ -37,7 +37,7 @@ export class ToggleScheduleView extends Observable{
             btn.id=id
             btn.classList.add('toggle-button')
             btn.setAttribute('aria-pressed','false')
-            btn.textContent=id[0].toUpperCase() + id.slice(1) + ' schedule'
+            btn.textContent=capitalizeWord(id) + ' schedule'
             this.wrapper.appendChild(btn)
         })
     }
