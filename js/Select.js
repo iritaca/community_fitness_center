@@ -28,6 +28,8 @@ class Select{
         this.labelEl.textContent = this.label
         this.container.appendChild(this.labelEl)
         this.labelEl.setAttribute('for',id)
+        
+        this.render()
     }
 
     /**
@@ -96,7 +98,7 @@ export class DropdownSelect extends Select{
         })
 
         this.container.appendChild(this.selectEl)
-        
+
         this.bindWithObservable(this.selectEl,'change')
     }
 
