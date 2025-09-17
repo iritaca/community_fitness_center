@@ -16,6 +16,8 @@ class Select{
         this.label = label
         this.id = id
 
+        this.observable = new Observable()
+
         // the container div for the element
         this.container = document.createElement('div')
         this.container.classList.add('select-container')
@@ -26,11 +28,31 @@ class Select{
         this.labelEl.textContent = this.label
         this.container.appendChild(this.labelEl)
         this.labelEl.setAttribute('for',id)
+    }
 
-        this.wrapper.appendChild(this.container)
+    /**
+     * Suscribe to value changes
+     * @param {function} callback - receives the selected data string
+     * 
+     */
+    subscribe(callback){
+        this.observable.subscribe(callback)
+    }
+
+    notify(value){
+        this.observable.notify(value)
+    }
+
+    bindWithObservable(el,event,extraFn){
+        if(!el) return
+        el.addEventListener(event, ()=>{
+            extraFn?.()
+            if(el.value) this.notify(el.value)
+        })
     }
 
     render(){
+        this.wrapper.appendChild(this.container)
         return this.container
     }
 
@@ -74,6 +96,8 @@ export class DropdownSelect extends Select{
         })
 
         this.container.appendChild(this.selectEl)
+        
+        this.bindWithObservable(this.selectEl,'change')
     }
 
 }
@@ -95,8 +119,6 @@ export class DateSelect extends Select{
         this.inputEl.type='date'
         this.container.appendChild(this.inputEl)
 
-        this.observable = new Observable()
-
         // Placeholder overlay
         this.placeholderEl = document.createElement('div')
         this.placeholderEl.textContent= 'Present day'
@@ -110,27 +132,12 @@ export class DateSelect extends Select{
             if(!this.inputEl.value)
             this.updatePlaceholder()})
 
-        this.inputEl.addEventListener('input', ()=>{
-            this.updatePlaceholder()
-            if(this.inputEl.value){
-                this.observable.notify(this.inputEl.value)
-            }
-
-        })
+        this.bindWithObservable(this.inputEl,'input',()=>{this.updatePlaceholder()})
     }
     // Updates the visibility of the placeholder based on the input
     updatePlaceholder(){
         const isEmpty = !this.inputEl.value
         this.placeholderEl.classList.toggle('hide', !isEmpty)
-    }
-
-    /**
-     * Suscribe to value changes
-     * @param {function} callback - receives the selected data string
-     * 
-     */
-    subscribe(callback){
-        this.observable.subscribe(callback)
     }
 
     /**
