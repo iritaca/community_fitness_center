@@ -1,4 +1,4 @@
-import { ACTIVITIES_BY_DAY } from '../constants.js';
+import { ACTIVITIES_BY_DAY, SELECT_DEFAULT_OPTION } from '../constants.js';
 
 /**
  * ActivityCard
@@ -62,20 +62,37 @@ export class ActivityCardList{
      * @param {string} props.day - Day of the week
      * @param {string} props.time  - Current time in HH:mm
      */
-    constructor({day,time}){
+    constructor({day,time,schedule}){
         this.day = day
         this.time = time
         this.activities=ACTIVITIES_BY_DAY.find(date=>date.day===this.day).activities
         this.container=document.createElement('ul')
+        this.schedule = schedule
         this.render()
+    }
+    getActivitiesList(){
+        const filter=this.schedule.filterByActivity ;
+        let activitiesList = [...this.activities]
+        
+        if(filter && filter!==SELECT_DEFAULT_OPTION){
+            activitiesList= activitiesList.filter(item=>item.activity.toLowerCase().includes(filter.toLowerCase()))
+        }
+        return activitiesList.sort((a,b)=>a.time.localeCompare(b.time))
     }
     
     render(){
+        const toggleType = this.schedule.type
         this.container.classList.add('activity-card-list')
 
-        const activitiviesSortedByTime = [...this.activities].sort((a,b)=> a.time.localeCompare(b.time))
+        const activitiesList = this.getActivitiesList()
 
-        for(const activity of activitiviesSortedByTime){
+        if(activitiesList.length===0 && toggleType==='daily' ){
+            const emptyCard= new EmptyCard()
+            this.container.appendChild(emptyCard)
+            return
+        }
+
+        for(const activity of activitiesList){
             const liEl =document.createElement('li')
             liEl.classList.add('activity-card-item')
             if(this.time>=activity.time) liEl.classList.add('isOutOfTime')
@@ -83,5 +100,17 @@ export class ActivityCardList{
             this.container.appendChild(liEl)
         }
 
+    }
+}
+/**
+ * Renders and empty card with a custom message
+ * @param {string} message - for the custom message
+ */
+export class EmptyCard{
+    constructor(message='No results'){
+        const emptyState = document.createElement('div')
+        emptyState.classList.add('activity-card-item-empty')
+        emptyState.textContent=message
+        return emptyState
     }
 }
