@@ -20,14 +20,25 @@ defaultOption:'all classes'})
 
 const dateSelect = new DateSelect({label:'Date',wrapper:filtersContainer,id:'date'})
 
-toggle.suscribe(active=>{
+
+const schedule = new ScheduleList({wrapper:'activities'})
+
+toggle.subscribe(active=>{
     console.log('Active toggle changed:', active)
     const isDaily = active==='daily'
 
     dateSelect.setIsVisible(isDaily)
+    schedule.setType(active)
 })
 
-const Schedule = new ScheduleList({wrapper:'activities'})
+dateSelect.subscribe(day=>{
+    console.log('Selected day:' + day)
+    if(!day){
+        schedule.setDate(null)
+        return
+    }
+    schedule.setDate(day)
+})
 
 
 const FooterLinks = new Footer({links:FOOTER_LINKS})
