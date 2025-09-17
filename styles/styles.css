@@ -128,7 +128,7 @@ ul{
   background-color: #fff;
   border-radius: 3px;
   opacity: 1;
-  transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.2s ease-in-out;
 }
 .date-placeholder.hide{
   opacity: 0;
