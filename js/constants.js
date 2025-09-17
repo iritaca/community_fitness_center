@@ -54,3 +54,5 @@ export const FOOTER_LINKS=[
     {title:'admin login',link:''},
     {title:'privacy policy',link:''},
 ]
+
+export const SELECT_DEFAULT_OPTION = 'all classes'
