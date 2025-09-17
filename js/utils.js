@@ -31,7 +31,23 @@ export class ValidateWrapper{
      }
 }
 
-// @TODO: Add documentation
+/**
+ * Capitalize the first character of a word
+ * @param {string} word - The word to capitalize
+ * @returns {string} Word with the first letter uppercased
+ */
 export function capitalizeWord(word){
+    if(!word) return ''
     return word[0].toUpperCase() + word.slice(1)
+}
+/** 
+ * Parses a YYYY-MM-DD string into a Date object (local timezone)
+ * 
+ * @param {string} dateString - Date string in the format "YY-MM-DD"
+ * @returns {Date|null} A date object at local midnight, or null 
+ * */
+export function parseDateStringToDate(dateString) {
+        if (!dateString) return null
+        const [y, m, d] = dateString.split('-').map(Number)
+        return new Date(y, m - 1, d)
 }
