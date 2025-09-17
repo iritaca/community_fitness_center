@@ -1,7 +1,7 @@
 
 import { Observable } from '../Observable.js';
 import { ValidateWrapper,parseDateStringToDate } from '../utils.js';
-import { ActivityCardList } from './ActivityCard.js';
+import { ActivityCardList, EmptyCard } from './ActivityCard.js';
 import { DayTitle } from './DayTitle.js';
 // need a class wrapper that can decide either to render DayTitle or DayAccorion, then the inner container should be filled by ACTIVITIES_BY_DAY;
 // - if the selected class has a value, the activities list should be filtered by classes that include the selected class
@@ -9,6 +9,9 @@ import { DayTitle } from './DayTitle.js';
 const VALID_DAYS=['monday','tuesday','wednesday','thursday','friday']
 
 /** Day - represents a single day in the schedule view
+ * 
+ * - schedule passes filter and toggleType to activityCardList
+ * 
  * - Renders:
  *  - the day title
  *  - activity cards
@@ -20,10 +23,11 @@ const VALID_DAYS=['monday','tuesday','wednesday','thursday','friday']
  *  - VALID_DAYS: the array of valid day names
  */
 export class Day{
-    constructor({day,time}){
+    constructor({day,time,schedule}){
         this.day = day
         this.time= time
         this.container = document.createElement('div')
+        this.schedule=schedule
         this.render()
     }
     /**
@@ -36,14 +40,13 @@ export class Day{
 
         // If the day is not valid -> show empty state
         if(!VALID_DAYS.includes(this.day)){
-            const emptyState = document.createElement('div')
-            emptyState.classList.add('activity-card-item-empty')
-            emptyState.textContent='No results'
-            return this.container.appendChild(emptyState)
+            const emptyCard = new EmptyCard()
+            this.container.appendChild(emptyCard)
+            return
         }
-        
+
         // Otherwise render the list of activities 
-        const cardList = new ActivityCardList({day:this.day,time:this.time})
+        const cardList = new ActivityCardList({day:this.day,time:this.time,schedule:this.schedule})
         this.container.appendChild(cardList.container)
     }
 }
@@ -60,12 +63,13 @@ export class Day{
  * 
  */
 export class ScheduleList extends Observable{
-    constructor({wrapper,type='daily'}){
+    constructor({wrapper,type='daily',filterByActivity=''}){
         super()
         this.wrapper = new ValidateWrapper({wrapper,componentName:this.constructor.name}).getWrapper()
         this.type = type
         this.date = null
         this.timeZone= 'America/Mexico_City'
+        this.filterByActivity = filterByActivity
         this.render()
     }
 
@@ -80,6 +84,11 @@ export class ScheduleList extends Observable{
         const time = now.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', hour12:false })
 
         return { day, time }
+    }
+
+    setActivities(filter){
+         this.filterByActivity=filter
+         this.render()
     }
 
      // Set the selected date from input or other sources
@@ -123,12 +132,11 @@ export class ScheduleList extends Observable{
             const dayName = new Intl.DateTimeFormat('en-US', { weekday: 'long', timeZone: this.timeZone })
                 .format(this.date)
                 .toLowerCase()
-            dayInstance = new Day({ day: dayName })
+            dayInstance = new Day({ day: dayName,schedule:this })
         } else {
             const present = this.getPresentDay()
-            dayInstance = new Day({ day: present.day, time: present.time })
+            dayInstance = new Day({ day: present.day, time: present.time,schedule:this })
         }
-
         if (!dayInstance || !dayInstance.container) {
             console.error('Failed to create Day instance', dayInstance)
             return
@@ -141,7 +149,7 @@ export class ScheduleList extends Observable{
         const ul = document.createElement('ul')
         for (const day of VALID_DAYS) {
             const li = document.createElement('li')
-            const newDay = new Day({ day })
+            const newDay = new Day({ day,schedule:this })
             li.appendChild(newDay.container)
             ul.appendChild(li)
         }
