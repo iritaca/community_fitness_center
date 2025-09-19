@@ -1,49 +1,35 @@
 import { ToggleScheduleView } from './ToggleScheduleView.js';
 import { DropdownSelect, DateSelect } from './Select.js';
 import { ScheduleList } from './DaySchedule/Schedule.js';
-import { ACTIVITIES, FOOTER_LINKS, SELECT_DEFAULT_OPTION } from './constants.js';
+import { ACTIVITIES, DOM_IDS, FOOTER_LINKS, SELECT_DEFAULT_OPTION } from './constants.js';
 import { Footer } from './Footer.js';
+import { ActivityDescription } from './DaySchedule/ActivityDescription.js';
 
 
-// Containers
-const filtersContainer = 'activities-filters'
-
-// Components
-const toggle = new ToggleScheduleView({buttons:['daily','weekly'],wrapper:'schedule-toggle'})
+const toggle = new ToggleScheduleView({buttons:['daily','weekly'],wrapper:DOM_IDS.scheduleToggle})
 
 const activitiesSelect = new DropdownSelect({
     label:'activity',
-    wrapper:filtersContainer,
+    wrapper:DOM_IDS.filtersContainer,
     options:ACTIVITIES,
     id:'class-select',
 defaultOption:SELECT_DEFAULT_OPTION})
 
-const dateSelect = new DateSelect({label:'Date',wrapper:filtersContainer,id:'date'})
+const activityDescription = new ActivityDescription({wrapper:DOM_IDS.activityDescription})
+const schedule = new ScheduleList({wrapper:DOM_IDS.scheduleList})
 
-
-const schedule = new ScheduleList({wrapper:'activities'})
+const dateSelect = new DateSelect({label:'Date',wrapper:DOM_IDS.filtersContainer,id:'date'})
 
 activitiesSelect.subscribe(activity=>{
-    console.log('Activity filtered by', activity)
     schedule.setActivities(activity)
+    activityDescription.showDescriptionBox(activity)
 })
+dateSelect.subscribe(day=>schedule.setDate(day))
 
 toggle.subscribe(active=>{
-    console.log('Active toggle changed:', active)
     const isDaily = active==='daily'
-
     dateSelect.setIsVisible(isDaily)
     schedule.setType(active)
 })
 
-dateSelect.subscribe(day=>{
-    console.log('Selected day:' + day)
-    if(!day){
-        schedule.setDate(null)
-        return
-    }
-    schedule.setDate(day)
-})
-
-
-const FooterLinks = new Footer({links:FOOTER_LINKS})
+const footerLinks = new Footer({links:FOOTER_LINKS})
