@@ -97,7 +97,7 @@ ul{
     font-weight: 600;
 }
 
-#activities-filters{
+#activity-filters{
   display: flex;
   width: 100%;
   gap:8px;
@@ -147,6 +147,20 @@ height: 40px;
   font-size: 10px;
   text-transform: uppercase;
   margin-bottom:4px;
+}
+
+#activity-description div{
+  margin-block: 16px;
+  border:1px solid;
+  border-radius: 3px;
+  padding: 12px;
+}
+#activity-description .description-title{
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+#activity-description  .description-title + p{
+  font-size: 1rem;
 }
 
 .schedule-header{
