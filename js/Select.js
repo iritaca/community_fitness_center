@@ -83,17 +83,18 @@ export class DropdownSelect extends Select{
         this.selectEl.setAttribute('id',id)
 
         // Sort options if requested
-        let orderedOptions = autoSort ? [...options].sort((a,b)=>a.localeCompare(b)) : [...options]
+        let orderedOptions = autoSort ? [...options].sort((a,b)=>a.name.localeCompare(b.name)) : [...options]
         // Adds default option at the top
         if(defaultOption){
-            orderedOptions.unshift(defaultOption)
+            orderedOptions.unshift({name:defaultOption,description:''})
         }
 
         // Populate <select>
         orderedOptions.forEach(option=>{
+            const{name:activityName} = option
             const optionEl = document.createElement('option')
-            optionEl.value=option
-            optionEl.textContent=capitalizeWord(option)
+            optionEl.value=activityName
+            optionEl.textContent=capitalizeWord(activityName)
             this.selectEl.appendChild(optionEl)
         })
 

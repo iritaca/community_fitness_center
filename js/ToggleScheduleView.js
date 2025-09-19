@@ -31,7 +31,7 @@ export class ToggleScheduleView extends Observable{
     
     /** Creates toggle buttons and appends them to the container */
     createButtons(){
-        this.wrapper.innerHTML =''
+        this.wrapper.innerHTML = ''
         this.buttons.forEach(id=>{
             const btn = document.createElement('button')
             btn.id=id

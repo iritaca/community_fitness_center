@@ -1,4 +1,3 @@
-// @TODO: The instructors could have real names, this information could be taken from an API
 export const ACTIVITIES_BY_DAY=[
     {day:'monday',activities:[
         {activity:'strength',instructor:'rochelle',time:'05:00'},
@@ -46,7 +45,56 @@ export const ACTIVITIES_BY_DAY=[
     ]},
 ]
 
-export const ACTIVITIES =['strength','pilates','weights','kickboxing','strength & flexibility','all-ages endurance','yoga & flow','all-american dance','ultimate endurance','skinny fit','fit & flex','fitness mix']
+export const ACTIVITIES = [
+  {
+    name: 'strength',
+    description: 'Build muscle and power through resistance-based exercises.'
+  },
+  {
+    name: 'pilates',
+    description: 'Improve posture, flexibility, and core stability with controlled movements.'
+  },
+  {
+    name: 'weights',
+    description: 'Train with free weights and machines to develop strength and endurance.'
+  },
+  {
+    name: 'kickboxing',
+    description: 'High-energy cardio workout combining martial arts and boxing techniques.'
+  },
+  {
+    name: 'strength & flexibility',
+    description: 'Balanced class focusing on building muscle while improving range of motion.'
+  },
+  {
+    name: 'all-ages endurance',
+    description: 'Inclusive cardio session designed for all fitness levels and age groups.'
+  },
+  {
+    name: 'yoga & flow',
+    description: 'Mind-body class combining yoga poses with flowing sequences for relaxation.'
+  },
+  {
+    name: 'all-american dance',
+    description: 'Fun, energetic dance-based workout mixing styles and upbeat music.'
+  },
+  {
+    name: 'ultimate endurance',
+    description: 'Intense cardio training to push stamina and aerobic capacity to the max.'
+  },
+  {
+    name: 'skinny fit',
+    description: 'Full-body toning workout targeting lean muscle and calorie burn.'
+  },
+  {
+    name: 'fit & flex',
+    description: 'Blend of stretching, mobility, and light strength training for balance.'
+  },
+  {
+    name: 'fitness mix',
+    description: 'Variety workout combining cardio, strength, and flexibility in one session.'
+  }
+]
 
 export const FOOTER_LINKS=[
     {title:'home',link:''},
@@ -56,3 +104,10 @@ export const FOOTER_LINKS=[
 ]
 
 export const SELECT_DEFAULT_OPTION = 'all classes'
+
+export const DOM_IDS={
+    filtersContainer:'activity-filters',
+    scheduleToggle:'schedule-toggle',
+    scheduleList:'activity-list',
+    activityDescription:'activity-description'
+}

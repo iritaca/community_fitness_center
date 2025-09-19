@@ -1,4 +1,3 @@
-// @TODO: Create the DayAccordionTitle, and add proper styles
 export class DayTitle{
     constructor({title}){
         this.title = title
